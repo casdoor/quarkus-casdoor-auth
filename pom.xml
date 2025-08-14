@@ -10,6 +10,7 @@
     <modules>
         <module>runtime</module>
         <module>deployment</module>
+        <module>docs</module>
     </modules>
 
     <properties>

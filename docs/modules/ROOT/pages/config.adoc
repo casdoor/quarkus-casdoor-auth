@@ -1,0 +1,141 @@
+= Configuration Reference
+
+This page provides a comprehensive reference for all configuration properties available in the Quarkus Casdoor Auth extension.
+
+[.configuration-legend]
+icon:lock[title=Fixed at build time] Configuration property fixed at build time - All other configuration properties are overridable at runtime
+
+[.configuration-reference.searchable, cols="80,.^10,.^10"]
+|===
+
+h|[[quarkus-casdoor-auth_configuration]]link:#quarkus-casdoor-auth_configuration[Configuration property]
+
+h|Type
+h|Default
+
+a| [[quarkus-casdoor_quarkus.casdoor.endpoint]]`link:#quarkus-casdoor_quarkus.casdoor.endpoint[quarkus.casdoor.endpoint]`
+
+[.description]
+--
+The base URL of your Casdoor server. This is a required property that must be set for the extension to work properly.
+
+Example: `https://casdoor.example.org`
+--|string
+|
+
+
+a| [[quarkus-casdoor_quarkus.casdoor.organization-name]]`link:#quarkus-casdoor_quarkus.casdoor.organization-name[quarkus.casdoor.organization-name]`
+
+[.description]
+--
+The organization name in Casdoor. This corresponds to the organization that your application belongs to in the Casdoor system.
+
+Example: `example-org`
+--|string
+|
+
+
+a| [[quarkus-casdoor_quarkus.casdoor.client-id]]`link:#quarkus-casdoor_quarkus.casdoor.client-id[quarkus.casdoor.client-id]`
+
+[.description]
+--
+The client ID for your application as configured in Casdoor. This is used for OAuth 2.0 / OIDC authentication.
+
+Example: `your-client-id`
+--|string
+|
+
+
+a| [[quarkus-casdoor_quarkus.casdoor.client-secret]]`link:#quarkus-casdoor_quarkus.casdoor.client-secret[quarkus.casdoor.client-secret]`
+
+[.description]
+--
+The client secret for your application as configured in Casdoor. This is used for OAuth 2.0 / OIDC authentication.
+
+Example: `your-client-secret`
+--|string
+|
+
+
+a| [[quarkus-casdoor_quarkus.casdoor.application-name]]`link:#quarkus-casdoor_quarkus.casdoor.application-name[quarkus.casdoor.application-name]`
+
+[.description]
+--
+The application name in Casdoor. This corresponds to the application that is registered in the Casdoor system.
+
+Example: `example-app`
+--|string
+|
+
+
+a| [[quarkus-casdoor_quarkus.casdoor.certificate]]`link:#quarkus-casdoor_quarkus.casdoor.certificate[quarkus.casdoor.certificate]`
+
+[.description]
+--
+The certificate used to verify JWT tokens from Casdoor. This can be either a file path to a certificate file or the certificate content itself.
+
+Example: `path/to/certificate.pem` or the actual certificate content
+--|string
+|
+
+|===
+
+== OIDC Configuration
+
+In addition to the Casdoor-specific configuration, you'll need to configure the OIDC integration:
+
+[source,properties]
+----
+# OIDC configuration
+quarkus.oidc.auth-server-url=${quarkus.casdoor.endpoint}
+quarkus.oidc.client-id=${quarkus.casdoor.client-id}
+quarkus.oidc.credentials.secret=${quarkus.casdoor.client-secret}
+quarkus.oidc.application-type=web-app
+quarkus.oidc.authentication.redirect-path=/callback
+quarkus.oidc.authentication.restore-path-after-redirect=true
+----
+
+== Security Configuration
+
+Configure HTTP security policies to control access to your endpoints:
+
+[source,properties]
+----
+# Public paths that don't require authentication
+quarkus.http.auth.permission.public.paths=/,/health/*,/metrics/*,/openapi/*,/swagger-ui/*,/q/*
+quarkus.http.auth.permission.public.policy=permit
+
+# Secured paths that require authentication
+quarkus.http.auth.permission.secured.paths=/api/*,/secured/*
+quarkus.http.auth.permission.secured.policy=authenticated
+----
+
+== Example Configuration
+
+Here's a complete example configuration:
+
+[source,properties]
+----
+# Casdoor server configuration
+quarkus.casdoor.endpoint=https://casdoor.example.org
+quarkus.casdoor.organization-name=example-org
+quarkus.casdoor.client-id=your-client-id
+quarkus.casdoor.client-secret=your-client-secret
+quarkus.casdoor.application-name=example-app
+quarkus.casdoor.certificate=./certificate.pem
+
+# OIDC configuration
+quarkus.oidc.auth-server-url=${quarkus.casdoor.endpoint}
+quarkus.oidc.client-id=${quarkus.casdoor.client-id}
+quarkus.oidc.credentials.secret=${quarkus.casdoor.client-secret}
+quarkus.oidc.application-type=web-app
+quarkus.oidc.authentication.redirect-path=/callback
+quarkus.oidc.authentication.restore-path-after-redirect=true
+
+# Security configuration
+quarkus.http.auth.permission.public.paths=/,/health/*,/metrics/*,/openapi/*,/swagger-ui/*,/q/*
+quarkus.http.auth.permission.public.policy=permit
+
+quarkus.http.auth.permission.secured.paths=/api/*,/secured/*
+quarkus.http.auth.permission.secured.policy=authenticated
+----
