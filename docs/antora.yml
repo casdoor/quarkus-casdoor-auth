@@ -1,11 +1,6 @@
 name: quarkus-casdoor-auth
-title: Quarkus Casdoor Auth
-version: dev
+title: Casdoor Auth
+version:
+  main: dev # fallback to using the matched refname as the value for other branches
 nav:
   - modules/ROOT/nav.adoc
-
-asciidoc:
-  attributes:
-    quarkus-version: 3.25.2
-    casdoor-sdk-version: 1.0
-    test-link-quarkus-docs-base: https://quarkus.io/version/3.15/guides

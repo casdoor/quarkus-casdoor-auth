@@ -1,104 +1,76 @@
 # Quarkus Casdoor Auth
 
-A Quarkus extension for integrating with Casdoor authentication and authorization service.
+[![Build](https://img.shields.io/github/actions/workflow/status/casdoor/quarkus-casdoor-auth/build.yml?branch=master&style=flat-square&label=build)](https://github.com/casdoor/quarkus-casdoor-auth/actions/workflows/build.yml)
+[![Maven Central](https://img.shields.io/maven-central/v/io.quarkiverse.casdoor-auth/quarkus-casdoor-auth?style=flat-square&logo=apache-maven&color=blue)](https://central.sonatype.com/artifact/io.quarkiverse.casdoor-auth/quarkus-casdoor-auth)
+[![Quarkus](https://img.shields.io/badge/Quarkus-3.40-4695EB?style=flat-square&logo=quarkus&logoColor=white)](https://quarkus.io)
+[![Java](https://img.shields.io/badge/Java-17%2B-ED8B00?style=flat-square&logo=openjdk&logoColor=white)](https://adoptium.net)
+[![Casdoor](https://img.shields.io/badge/Casdoor-casdoor.ai-2C7BE5?style=flat-square)](https://casdoor.ai)
+[![Discord](https://img.shields.io/discord/1022748306096537660?style=flat-square&logo=discord&label=Discord&color=5865F2)](https://discord.gg/5rPsrAzK7S)
+[![License](https://img.shields.io/github/license/casdoor/quarkus-casdoor-auth?style=flat-square&color=orange)](LICENSE)
 
-## Overview
+A Quarkus extension for [Casdoor](https://casdoor.ai), an open-source identity and access management platform with OAuth 2.0, OIDC, SAML, LDAP and Casbin-based permissions.
 
-Quarkus Casdoor Auth is an extension that integrates [Casdoor](https://www.casdoor.com) - an open-source Identity and Access Management (IAM) solution - with Quarkus applications. This extension provides seamless authentication and authorization capabilities based on OAuth 2.0 / OIDC protocols.
+The extension builds on `quarkus-oidc`, which handles sign-in and token verification, and adds what is specific to Casdoor:
 
-## Features
-
-- OAuth 2.0 / OIDC integration with Casdoor server
-- JWT token validation and processing
-- Automatic redirection to Casdoor login page for unauthenticated users
-- Configurable security policies
-- Public path exemptions for resources like health checks, metrics, etc.
-- User identity extraction and management
-- Native mode compatible
+- **Roles**: the user's Casdoor roles become Quarkus roles, so `@RolesAllowed` works with both the `JWT` and `JWT-Standard` token formats
+- **Permissions**: `@PermissionsAllowed("resource:action")` is checked against Casdoor permissions with the Casdoor `/api/enforce` API
+- **Path-based authorization**: the `casdoor` HTTP security policy checks the request path and method against Casdoor permissions
 
 ## Installation
 
-Add the extension to your project's `pom.xml`:
-
 ```xml
 <dependency>
-    <groupId>casbin.casdoor</groupId>
+    <groupId>io.quarkiverse.casdoor-auth</groupId>
     <artifactId>quarkus-casdoor-auth</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>${quarkus-casdoor-auth.version}</version>
 </dependency>
 ```
 
 ## Configuration
 
-Configure the extension in your `application.properties` file:
+Create an application in Casdoor and point `quarkus-oidc` at your Casdoor server:
 
 ```properties
-# Casdoor server configuration
-quarkus.casdoor.endpoint=https://casdoor.example.org
-quarkus.casdoor.organization-name=example
-quarkus.casdoor.client-id=your-client-id
-quarkus.casdoor.client-secret=your-client-secret
-quarkus.casdoor.application-name=example-app
-quarkus.casdoor.certificate=path/to/certificate.pem
-
-# OIDC configuration
-quarkus.oidc.auth-server-url=${quarkus.casdoor.endpoint}
-quarkus.oidc.client-id=${quarkus.casdoor.client-id}
-quarkus.oidc.credentials.secret=${quarkus.casdoor.client-secret}
+quarkus.oidc.auth-server-url=https://door.casdoor.com
+quarkus.oidc.client-id=<client ID>
+quarkus.oidc.credentials.secret=<client secret>
+# web-app: redirect users to the Casdoor sign-in page; service (the default): accept bearer tokens only
 quarkus.oidc.application-type=web-app
-
-# Security configuration (customize as needed)
-quarkus.http.auth.permission.public.paths=/,/health/*,/metrics/*,/openapi/*,/swagger-ui/*,/q/*
-quarkus.http.auth.permission.public.policy=permit
-
-quarkus.http.auth.permission.secured.paths=/api/*,/secured/*
-quarkus.http.auth.permission.secured.policy=authenticated
 ```
-
-### Configuration Properties Reference
-
-| Property | Description | Default | Required |
-|----------|-------------|---------|----------|
-| `quarkus.casdoor.endpoint` | The base URL of your Casdoor server | - | Yes |
-| `quarkus.casdoor.organization-name` | The organization name in Casdoor | - | Yes |
-| `quarkus.casdoor.client-id` | The client ID for your application | - | Yes |
-| `quarkus.casdoor.client-secret` | The client secret for your application | - | Yes |
-| `quarkus.casdoor.application-name` | The application name in Casdoor | - | Yes |
-| `quarkus.casdoor.certificate` | The certificate used to verify JWT tokens (file path or content) | - | Yes |
-| `quarkus.oidc.auth-server-url` | OIDC server URL (usually same as Casdoor endpoint) | ${quarkus.casdoor.endpoint} | No |
 
 ## Usage
 
-### Basic Authentication
+```java
+@Path("/api")
+public class OrderResource {
 
-Once configured, the extension automatically integrates with the Quarkus security framework. Protected endpoints will require valid authentication tokens from Casdoor. Users accessing protected endpoints without authentication will be automatically redirected to the Casdoor login page.
+    @GET
+    @Path("/admin")
+    @RolesAllowed("admin")
+    public String admin() {
+        return "admin";
+    }
 
-### Securing Endpoints
+    // Casbin request ["<organization>/<username>", "orders", "read"]
+    @GET
+    @Path("/orders")
+    @PermissionsAllowed("orders:read")
+    public String orders() {
+        return "orders";
+    }
 
-You can secure your endpoints using standard Jakarta Security annotations like `@RolesAllowed`, `@PermitAll`, and `@DenyAll`. The extension integrates with Quarkus security system to enforce these access controls.
+    // Casbin request ["<organization>/<username>", "/api/reports", "GET"]
+    @GET
+    @Path("/reports")
+    @AuthorizationPolicy(name = "casdoor")
+    public String reports() {
+        return "reports";
+    }
+}
+```
 
-### Access to User Information
-
-You can inject the `SecurityIdentity` interface to access information about the authenticated user, including the user's principal name, roles, and any additional attributes provided by Casdoor.
-
-### Customizing Authentication Logic
-
-For advanced use cases, you can implement your own `CasdoorConfigResolver` interface to customize how the Casdoor configuration is resolved and provide dynamic configuration capabilities.
-
-## Security Policy
-
-The extension implements `HttpSecurityPolicy` to control access to your application's endpoints. By default, the following paths are public and don't require authentication:
-
-- `/` (root path)
-- `/health/*` (health check endpoints)
-- `/metrics/*` (metrics endpoints)
-- `/openapi/*` (OpenAPI documentation)
-- `/swagger-ui/*` (Swagger UI)
-- `/q/*` (Quarkus dev UI paths)
-
-All other paths require authentication unless explicitly configured as public in your `application.properties`.
-
+See the [documentation](https://docs.quarkiverse.io/quarkus-casdoor-auth/dev/) for role mapping, permission targets, caching and all configuration properties.
 
 ## License
 
-Licensed under the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0)
+[Apache License 2.0](LICENSE)

@@ -1,0 +1,263 @@
+[.configuration-legend]
+icon:lock[title=Fixed at build time] Configuration property fixed at build time - All other configuration properties are overridable at runtime
+[.configuration-reference.searchable, cols="80,.^10,.^10"]
+|===
+
+h|[.header-title]##Configuration property##
+h|Type
+h|Default
+
+a| [[quarkus-casdoor-auth_quarkus-casdoor-endpoint]] [.property-path]##link:#quarkus-casdoor-auth_quarkus-casdoor-endpoint[`+++quarkus.casdoor.endpoint+++`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.casdoor.endpoint+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Base URL of the Casdoor server, for example `https://door.casdoor.com`. Defaults to `quarkus.oidc.auth-server-url`.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_CASDOOR_ENDPOINT+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_CASDOOR_ENDPOINT+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|
+
+a| [[quarkus-casdoor-auth_quarkus-casdoor-client-id]] [.property-path]##link:#quarkus-casdoor-auth_quarkus-casdoor-client-id[`+++quarkus.casdoor.client-id+++`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.casdoor.client-id+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Client ID used to call the Casdoor API. Defaults to `quarkus.oidc.client-id`.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_CASDOOR_CLIENT_ID+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_CASDOOR_CLIENT_ID+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|
+
+a| [[quarkus-casdoor-auth_quarkus-casdoor-client-secret]] [.property-path]##link:#quarkus-casdoor-auth_quarkus-casdoor-client-secret[`+++quarkus.casdoor.client-secret+++`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.casdoor.client-secret+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Client secret used to call the Casdoor API. Defaults to `quarkus.oidc.credentials.secret`.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_CASDOOR_CLIENT_SECRET+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_CASDOOR_CLIENT_SECRET+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|
+
+a| [[quarkus-casdoor-auth_quarkus-casdoor-roles-enabled]] [.property-path]##link:#quarkus-casdoor-auth_quarkus-casdoor-roles-enabled[`+++quarkus.casdoor.roles.enabled+++`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.casdoor.roles.enabled+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Add the names of the user's Casdoor roles to the security identity, so that `@RolesAllowed` works. Roles are read from the `roles` claim of the token; with the `JWT-Standard` token format they are read from the UserInfo response, which requires `quarkus.oidc.authentication.user-info-required=true`.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_CASDOOR_ROLES_ENABLED+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_CASDOOR_ROLES_ENABLED+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|`+++true+++`
+
+a| [[quarkus-casdoor-auth_quarkus-casdoor-authorization-enabled]] [.property-path]##link:#quarkus-casdoor-auth_quarkus-casdoor-authorization-enabled[`+++quarkus.casdoor.authorization.enabled+++`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.casdoor.authorization.enabled+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Check `@PermissionsAllowed` permissions and the `casdoor` HTTP security policy with the Casdoor `/api/enforce` API.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_CASDOOR_AUTHORIZATION_ENABLED+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_CASDOOR_AUTHORIZATION_ENABLED+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|`+++true+++`
+
+a| [[quarkus-casdoor-auth_quarkus-casdoor-authorization-permission-id]] [.property-path]##link:#quarkus-casdoor-auth_quarkus-casdoor-authorization-permission-id[`+++quarkus.casdoor.authorization.permission-id+++`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.casdoor.authorization.permission-id+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Casdoor permission to enforce, as `<organization>/<name>`.
+
+Set at most one of `permission-id`, `model-id`, `resource-id` and `enforcer-id`. If none is set, all permissions of the user's organization are checked, and access is granted if any of them allows the request.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_CASDOOR_AUTHORIZATION_PERMISSION_ID+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_CASDOOR_AUTHORIZATION_PERMISSION_ID+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|
+
+a| [[quarkus-casdoor-auth_quarkus-casdoor-authorization-model-id]] [.property-path]##link:#quarkus-casdoor-auth_quarkus-casdoor-authorization-model-id[`+++quarkus.casdoor.authorization.model-id+++`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.casdoor.authorization.model-id+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Casdoor model whose permissions are enforced, as `<organization>/<name>`.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_CASDOOR_AUTHORIZATION_MODEL_ID+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_CASDOOR_AUTHORIZATION_MODEL_ID+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|
+
+a| [[quarkus-casdoor-auth_quarkus-casdoor-authorization-resource-id]] [.property-path]##link:#quarkus-casdoor-auth_quarkus-casdoor-authorization-resource-id[`+++quarkus.casdoor.authorization.resource-id+++`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.casdoor.authorization.resource-id+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Casdoor resource whose permissions are enforced.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_CASDOOR_AUTHORIZATION_RESOURCE_ID+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_CASDOOR_AUTHORIZATION_RESOURCE_ID+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|
+
+a| [[quarkus-casdoor-auth_quarkus-casdoor-authorization-enforcer-id]] [.property-path]##link:#quarkus-casdoor-auth_quarkus-casdoor-authorization-enforcer-id[`+++quarkus.casdoor.authorization.enforcer-id+++`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.casdoor.authorization.enforcer-id+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Casdoor enforcer to use, as `<organization>/<name>`.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_CASDOOR_AUTHORIZATION_ENFORCER_ID+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_CASDOOR_AUTHORIZATION_ENFORCER_ID+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|
+
+a| [[quarkus-casdoor-auth_quarkus-casdoor-authorization-cache-ttl]] [.property-path]##link:#quarkus-casdoor-auth_quarkus-casdoor-authorization-cache-ttl[`+++quarkus.casdoor.authorization.cache-ttl+++`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.casdoor.authorization.cache-ttl+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+How long an enforce result is cached. `0` disables the cache, so that permission changes in Casdoor take effect immediately.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_CASDOOR_AUTHORIZATION_CACHE_TTL+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_CASDOOR_AUTHORIZATION_CACHE_TTL+++`
+endif::add-copy-button-to-env-var[]
+--
+|link:https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/Duration.html[Duration] link:#duration-note-anchor-quarkus-casdoor-auth_quarkus-casdoor[icon:question-circle[title=More information about the Duration format]]
+|`+++0S+++`
+
+a| [[quarkus-casdoor-auth_quarkus-casdoor-authorization-timeout]] [.property-path]##link:#quarkus-casdoor-auth_quarkus-casdoor-authorization-timeout[`+++quarkus.casdoor.authorization.timeout+++`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.casdoor.authorization.timeout+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Timeout of a call to the Casdoor API.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_CASDOOR_AUTHORIZATION_TIMEOUT+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_CASDOOR_AUTHORIZATION_TIMEOUT+++`
+endif::add-copy-button-to-env-var[]
+--
+|link:https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/Duration.html[Duration] link:#duration-note-anchor-quarkus-casdoor-auth_quarkus-casdoor[icon:question-circle[title=More information about the Duration format]]
+|`+++10S+++`
+
+|===
+
+ifndef::no-duration-note[]
+[NOTE]
+[id=duration-note-anchor-quarkus-casdoor-auth_quarkus-casdoor]
+.About the Duration format
+====
+To write duration values, use the standard `java.time.Duration` format.
+See the link:https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/Duration.html#parse(java.lang.CharSequence)[Duration#parse() Java API documentation] for more information.
+
+You can also use a simplified format, starting with a number:
+
+* If the value is only a number, it represents time in seconds.
+* If the value is a number followed by `ms`, it represents time in milliseconds.
+
+In other cases, the simplified format is translated to the `java.time.Duration` format for parsing:
+
+* If the value is a number followed by `h`, `m`, or `s`, it is prefixed with `PT`.
+* If the value is a number followed by `d`, it is prefixed with `P`.
+====
+endif::no-duration-note[]

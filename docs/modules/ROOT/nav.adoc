@@ -1,2 +1,2 @@
-* xref:index.adoc[Quarkus Casdoor Auth]
-* xref:config.adoc[Configuration Reference]
+* xref:index.adoc[Getting started]
+* xref:config-reference.adoc[Configuration Reference]

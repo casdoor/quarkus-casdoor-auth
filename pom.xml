@@ -1,26 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>casbin.casdoor</groupId>
+
+    <parent>
+        <groupId>io.quarkiverse</groupId>
+        <artifactId>quarkiverse-parent</artifactId>
+        <version>26</version>
+    </parent>
+    <groupId>io.quarkiverse.casdoor-auth</groupId>
     <artifactId>quarkus-casdoor-auth-parent</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>999-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Quarkus Casdoor Auth - Parent</name>
 
     <modules>
-        <module>runtime</module>
         <module>deployment</module>
-        <module>docs</module>
+        <module>runtime</module>
     </modules>
 
+    <scm>
+        <connection>scm:git:git@github.com:quarkiverse/quarkus-casdoor-auth.git</connection>
+        <developerConnection>scm:git:git@github.com:quarkiverse/quarkus-casdoor-auth.git</developerConnection>
+        <url>https://github.com/quarkiverse/quarkus-casdoor-auth</url>
+    </scm>
+
     <properties>
-        <compiler-plugin.version>3.14.0</compiler-plugin.version>
-        <failsafe-plugin.version>${surefire-plugin.version}</failsafe-plugin.version>
+        <compiler-plugin.version>3.15.0</compiler-plugin.version>
         <maven.compiler.release>17</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <quarkus.version>3.25.2</quarkus.version>
-        <surefire-plugin.version>3.5.2</surefire-plugin.version>
+        <quarkus.version>3.40.1</quarkus.version>
     </properties>
 
     <dependencyManagement>
@@ -44,35 +53,45 @@
                     <version>${quarkus.version}</version>
                 </plugin>
                 <plugin>
-                    <artifactId>maven-surefire-plugin</artifactId>
-                    <version>${surefire-plugin.version}</version>
-                    <configuration>
-                        <systemPropertyVariables>
-                            <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
-                            <maven.home>${maven.home}</maven.home>
-                            <maven.repo>${settings.localRepository}</maven.repo>
-                        </systemPropertyVariables>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-failsafe-plugin</artifactId>
-                    <version>${failsafe-plugin.version}</version>
-                    <configuration>
-                        <systemPropertyVariables>
-                            <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
-                            <maven.home>${maven.home}</maven.home>
-                            <maven.repo>${settings.localRepository}</maven.repo>
-                        </systemPropertyVariables>
-                    </configuration>
-                </plugin>
-                <plugin>
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>${compiler-plugin.version}</version>
                     <configuration>
                         <parameters>true</parameters>
                     </configuration>
                 </plugin>
+                <plugin>
+                    <groupId>io.quarkus</groupId>
+                    <artifactId>quarkus-config-doc-maven-plugin</artifactId>
+                    <version>${quarkus.version}</version>
+                </plugin>
             </plugins>
         </pluginManagement>
     </build>
+
+    <profiles>
+        <profile>
+            <id>docs</id>
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                    <value>!true</value>
+                </property>
+            </activation>
+            <modules>
+                <module>docs</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>it</id>
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                    <value>!true</value>
+                </property>
+            </activation>
+            <modules>
+                <module>integration-tests</module>
+            </modules>
+        </profile>
+    </profiles>
 </project>

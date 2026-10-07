@@ -3,9 +3,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>casbin.casdoor</groupId>
+        <groupId>io.quarkiverse.casdoor-auth</groupId>
         <artifactId>quarkus-casdoor-auth-parent</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>999-SNAPSHOT</version>
     </parent>
     <artifactId>quarkus-casdoor-auth-deployment</artifactId>
     <name>Quarkus Casdoor Auth - Deployment</name>
@@ -17,29 +17,12 @@
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-vertx-http-deployment</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-security-deployment</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.quarkus</groupId>
             <artifactId>quarkus-oidc-deployment</artifactId>
         </dependency>
         <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-apache-httpclient-deployment</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>casbin.casdoor</groupId>
+            <groupId>io.quarkiverse.casdoor-auth</groupId>
             <artifactId>quarkus-casdoor-auth</artifactId>
             <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-junit5-internal</artifactId>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -55,9 +38,9 @@
                                 <path>
                                     <groupId>io.quarkus</groupId>
                                     <artifactId>quarkus-extension-processor</artifactId>
-                                    <version>${quarkus.version}</version>
                                 </path>
                             </annotationProcessorPaths>
+                            <annotationProcessorPathsUseDepMgmt>true</annotationProcessorPathsUseDepMgmt>
                         </configuration>
                     </execution>
                 </executions>

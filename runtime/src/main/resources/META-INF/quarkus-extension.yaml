@@ -1,9 +1,15 @@
-name: Quarkus Casdoor Auth
-#description: Do something useful.
+name: Casdoor Auth
+description: Sign in with Casdoor and authorize requests with Casdoor roles and permissions
 metadata:
-#  keywords:
-#    - quarkus-casdoor-auth
-#  guide: ... # To create and publish this guide, see https://github.com/quarkiverse/quarkiverse/wiki#documenting-your-extension
-#  categories:
-#    - "miscellaneous"
-#  status: "preview"
+  keywords:
+    - casdoor
+    - oidc
+    - casbin
+    - authorization
+    - security
+  guide: https://docs.quarkiverse.io/quarkus-casdoor-auth/dev/
+  categories:
+    - "security"
+  status: "preview"
+  config:
+    - "quarkus.casdoor."
